@@ -1,1 +1,4 @@
+com\sgos\repositories\OrdenServicioJdbcRepository.class
 com\sgos\servlets\OrdenServicioServlet.class
+com\sgos\config\ConexionBD.class
+com\sgos\entities\OrdenServicio.class
