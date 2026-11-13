@@ -7,26 +7,31 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    // Datos de conexión a MySQL.
-    private static final String URL =
-        "jdbc:mysql://localhost:3306/sgos";
+    private static final String URL = "jdbc:mysql://localhost:3306/sgos";
+    private static final String USER = "root";
 
-    private static final String USUARIO = "root";
+    public static Connection getConnection() throws SQLException {
 
-    // Se obtiene la contraseña desde una variable de entorno.
-    private static final String PASSWORD =
-        System.getenv("DB_PASSWORD");
+        String password = System.getenv("DB_PASSWORD");
 
-    // Método para obtener una conexión JDBC.
-    public static Connection getConnection()
-            throws SQLException {
-
-        if (PASSWORD == null || PASSWORD.isBlank()) {
+        if (password == null || password.isBlank()) {
             throw new SQLException(
-                "Configura la variable de entorno DB_PASSWORD");
+                "La variable de entorno DB_PASSWORD no está configurada"
+            );
+        }
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException(
+                "No se encontró el controlador JDBC de MySQL", e
+            );
         }
 
         return DriverManager.getConnection(
-            URL, USUARIO, PASSWORD);
+            URL,
+            USER,
+            password
+        );
     }
 }
